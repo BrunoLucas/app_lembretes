@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#238199</color>
+    <color name="colorPrimaryDark">#176579</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cor_papel">#9CFFDF40</color>
+    <color name="cor_preta">#000000</color>
+    <color name="quase_branco">#a8fff7ee</color>
+</resources>

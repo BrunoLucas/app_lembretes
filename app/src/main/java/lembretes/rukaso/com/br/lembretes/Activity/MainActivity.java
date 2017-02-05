@@ -1,6 +1,7 @@
 package lembretes.rukaso.com.br.lembretes.Activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.View;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import lembretes.rukaso.com.br.lembretes.R;
 import lembretes.rukaso.com.br.lembretes.adapter.LembreteRecyclerAdapter;
+import lembretes.rukaso.com.br.lembretes.dao.LembreteDao;
 import lembretes.rukaso.com.br.lembretes.listener.CustomTouchListener;
 import lembretes.rukaso.com.br.lembretes.listener.onItemClickListener;
 import lembretes.rukaso.com.br.lembretes.model.Lembrete;
@@ -28,13 +31,14 @@ import lembretes.rukaso.com.br.lembretes.util.Constants;
 public class MainActivity extends AppCompatActivity {
 
     private List<Lembrete> listaDeLembretes = Collections.emptyList();
-
+    private LembreteDao lembreteDao;
+    private Lembrete lembrete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        listaDeLembretes = mockListLembrete();
+        listaDeLembretes = obterListaLembretes();
         iniciarRecyleView();
     }
 
@@ -70,6 +74,21 @@ public class MainActivity extends AppCompatActivity {
                                                startActivity(intent);
                                            }
                                        });
+    }
+
+    private List<Lembrete> obterListaLembretes(){
+        lembreteDao = new LembreteDao(this);
+        Cursor cursor = lembreteDao.listarLembretes();
+        listaDeLembretes = new ArrayList<>();
+        while(cursor.moveToNext()){
+            Lembrete lembrete = new Lembrete();
+            lembrete.setCodigo(cursor.getLong(cursor.getColumnIndexOrThrow("_ID")));
+            lembrete.setTitulo(cursor.getString(cursor.getColumnIndexOrThrow("TITULO")));
+            lembrete.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow("DESCRICAO")));
+
+            listaDeLembretes.add(lembrete);
+        }
+        return  listaDeLembretes;
     }
 
     private List<Lembrete> mockListLembrete(){

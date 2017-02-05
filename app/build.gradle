@@ -31,4 +31,9 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:25.1.0'
     compile 'com.android.support:support-v13:25.1.0'
     compile 'com.android.support:design:25.0.0'
+
+
+    // Set this dependency to build and run Espresso tests
+    // Set this dependency to build and run UI Automator tests
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }
